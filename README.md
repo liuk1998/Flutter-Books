@@ -50,3 +50,16 @@ FLUTTER_STORAGE_BASE_URL=https://storage.flutter-io.cn
 
 6.升级flutter SDK: flutter upgrade
 ```
+
+### 5.下载 Flutter 开发工具依赖及创建运行项目
+
+```
+VS Code的配置与使用(Ctrl+Shift+P):
+1.安装flutter插件: 下载 flutter 并重启. 在配置栏中输入 doctor, 然后选择 Flutter: Run Flutter Doctor 进行验证.
+
+2.新建 flutter 项目: 在配置栏中输入 flutter, 然后选择 Flutter: New Project, 选择模板并指定文件存储位置, 输入项目名称. 等待项目创建继续, 并显示main.dart文件.
+
+3.运行 flutter 项目: 在项目终端中输入 flutter run -d chrome --web-port=8080 --web-hostname=127.0.0.1
+
+4.如果有更新, 在终端中输入r, 即可刷新页面.
+```
