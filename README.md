@@ -32,3 +32,21 @@ JIT 在运行时将源码实时翻译为机器码来执行. 举例: JavaScript�
 3.Widgets 层(基础组件库).
 4.Material 和 Cupertino 层(两种视觉风格的组件库).
 ```
+
+### 4.搭建 Flutter 开发环境
+
+```
+1.搭建临时镜像(将如下环境变量添加到到用户环境变量中):
+PUB_HOSTED_URL=https://pub.flutter-io.cn
+FLUTTER_STORAGE_BASE_URL=https://storage.flutter-io.cn
+
+2.下载SDK: https://flutter.cn/docs/release/archive?tab=windows. 在磁盘中新建一个文件夹然后将安装包解压到文件夹中. 在解压后目录的flutter文件下找flutter_console.bat, 双击运行并启动flutter命令行.
+
+3.系统全局引用flutter命令: 需要添加以下环境变量到用户PATH, flutter\bin的全路径.
+
+4.查看是否还需要安装其他依赖: flutter doctor
+
+5.管理flutter SDK分支: flutter channel 查看或切换分支, dev和master为开发分支.
+
+6.升级flutter SDK: flutter upgrade
+```
