@@ -206,135 +206,20 @@ enum _StateLifecycle {
   defunct,
 }
 
-/// The signature of [State.setState] functions.
 typedef StateSetter = void Function(VoidCallback fn);
 
 const String _flutterWidgetsLibrary = 'package:flutter/widgets.dart';
 
-/// The logic and internal state for a [StatefulWidget].
-///
-/// State is information that (1) can be read synchronously when the widget is
-/// built and (2) might change during the lifetime of the widget. It is the
-/// responsibility of the widget implementer to ensure that the [State] is
-/// promptly notified when such state changes, using [State.setState].
-///
-/// [State] objects are created by the framework by calling the
-/// [StatefulWidget.createState] method when inflating a [StatefulWidget] to
-/// insert it into the tree. Because a given [StatefulWidget] instance can be
-/// inflated multiple times (e.g., the widget is incorporated into the tree in
-/// multiple places at once), there might be more than one [State] object
-/// associated with a given [StatefulWidget] instance. Similarly, if a
-/// [StatefulWidget] is removed from the tree and later inserted in to the tree
-/// again, the framework will call [StatefulWidget.createState] again to create
-/// a fresh [State] object, simplifying the lifecycle of [State] objects.
-///
-/// [State] objects have the following lifecycle:
-///
-///  * The framework creates a [State] object by calling
-///    [StatefulWidget.createState].
-///  * The newly created [State] object is associated with a [BuildContext].
-///    This association is permanent: the [State] object will never change its
-///    [BuildContext]. However, the [BuildContext] itself can be moved around
-///    the tree along with its subtree. At this point, the [State] object is
-///    considered [mounted].
-///  * The framework calls [initState]. Subclasses of [State] should override
-///    [initState] to perform one-time initialization that depends on the
-///    [BuildContext] or the widget, which are available as the [context] and
-///    [widget] properties, respectively, when the [initState] method is
-///    called.
-///  * The framework calls [didChangeDependencies]. Subclasses of [State] should
-///    override [didChangeDependencies] to perform initialization involving
-///    [InheritedWidget]s. If [BuildContext.dependOnInheritedWidgetOfExactType] is
-///    called, the [didChangeDependencies] method will be called again if the
-///    inherited widgets subsequently change or if the widget moves in the tree.
-///  * At this point, the [State] object is fully initialized and the framework
-///    might call its [build] method any number of times to obtain a
-///    description of the user interface for this subtree. [State] objects can
-///    spontaneously request to rebuild their subtree by calling their
-///    [setState] method, which indicates that some of their internal state
-///    has changed in a way that might impact the user interface in this
-///    subtree.
-///  * During this time, a parent widget might rebuild and request that this
-///    location in the tree update to display a new widget with the same
-///    [runtimeType] and [Widget.key]. When this happens, the framework will
-///    update the [widget] property to refer to the new widget and then call the
-///    [didUpdateWidget] method with the previous widget as an argument. [State]
-///    objects should override [didUpdateWidget] to respond to changes in their
-///    associated widget (e.g., to start implicit animations). The framework
-///    always calls [build] after calling [didUpdateWidget], which means any
-///    calls to [setState] in [didUpdateWidget] are redundant. (See alse the
-///    discussion at [Element.rebuild].)
-///  * During development, if a hot reload occurs (whether initiated from the
-///    command line `flutter` tool by pressing `r`, or from an IDE), the
-///    [reassemble] method is called. This provides an opportunity to
-///    reinitialize any data that was prepared in the [initState] method.
-///  * If the subtree containing the [State] object is removed from the tree
-///    (e.g., because the parent built a widget with a different [runtimeType]
-///    or [Widget.key]), the framework calls the [deactivate] method. Subclasses
-///    should override this method to clean up any links between this object
-///    and other elements in the tree (e.g. if you have provided an ancestor
-///    with a pointer to a descendant's [RenderObject]).
-///  * At this point, the framework might reinsert this subtree into another
-///    part of the tree. If that happens, the framework will ensure that it
-///    calls [build] to give the [State] object a chance to adapt to its new
-///    location in the tree. If the framework does reinsert this subtree, it
-///    will do so before the end of the animation frame in which the subtree was
-///    removed from the tree. For this reason, [State] objects can defer
-///    releasing most resources until the framework calls their [dispose]
-///    method.
-///  * If the framework does not reinsert this subtree by the end of the current
-///    animation frame, the framework will call [dispose], which indicates that
-///    this [State] object will never build again. Subclasses should override
-///    this method to release any resources retained by this object (e.g.,
-///    stop any active animations).
-///  * After the framework calls [dispose], the [State] object is considered
-///    unmounted and the [mounted] property is false. It is an error to call
-///    [setState] at this point. This stage of the lifecycle is terminal: there
-///    is no way to remount a [State] object that has been disposed.
-///
-/// See also:
-///
-///  * [StatefulWidget], where the current configuration of a [State] is hosted,
-///    and whose documentation has sample code for [State].
-///  * [StatelessWidget], for widgets that always build the same way given a
-///    particular configuration and ambient state.
-///  * [InheritedWidget], for widgets that introduce ambient state that can
-///    be read by descendant widgets.
-///  * [Widget], for an overview of widgets in general.
 @optionalTypeArgs
 abstract class State<T extends StatefulWidget> with Diagnosticable {
-  /// The current configuration.
-  ///
-  /// A [State] object's configuration is the corresponding [StatefulWidget]
-  /// instance. This property is initialized by the framework before calling
-  /// [initState]. If the parent updates this location in the tree to a new
-  /// widget with the same [runtimeType] and [Widget.key] as the current
-  /// configuration, the framework will update this property to refer to the new
-  /// widget and then call [didUpdateWidget], passing the old configuration as
-  /// an argument.
+  
   T get widget => _widget!;
   T? _widget;
 
-  /// The current stage in the lifecycle for this state object.
-  ///
-  /// This field is used by the framework when asserts are enabled to verify
-  /// that [State] objects move through their lifecycle in an orderly fashion.
   _StateLifecycle _debugLifecycleState = _StateLifecycle.created;
 
-  /// Verifies that the [State] that was created is one that expects to be
-  /// created for that particular [Widget].
   bool _debugTypesAreRight(Widget widget) => widget is T;
 
-  /// The location in the tree where this widget builds.
-  ///
-  /// The framework associates [State] objects with a [BuildContext] after
-  /// creating them with [StatefulWidget.createState] and before calling
-  /// [initState]. The association is permanent: the [State] object will never
-  /// change its [BuildContext]. However, the [BuildContext] itself can be moved
-  /// around the tree.
-  ///
-  /// After calling [dispose], the framework severs the [State] object's
-  /// connection with the [BuildContext].
   BuildContext get context {
     assert(() {
       if (_element == null) {
@@ -349,48 +234,8 @@ abstract class State<T extends StatefulWidget> with Diagnosticable {
   }
   StatefulElement? _element;
 
-  /// Whether this [State] object is currently in a tree.
-  ///
-  /// After creating a [State] object and before calling [initState], the
-  /// framework "mounts" the [State] object by associating it with a
-  /// [BuildContext]. The [State] object remains mounted until the framework
-  /// calls [dispose], after which time the framework will never ask the [State]
-  /// object to [build] again.
-  ///
-  /// It is an error to call [setState] unless [mounted] is true.
   bool get mounted => _element != null;
 
-  /// Called when this object is inserted into the tree.
-  ///
-  /// The framework will call this method exactly once for each [State] object
-  /// it creates.
-  ///
-  /// Override this method to perform initialization that depends on the
-  /// location at which this object was inserted into the tree (i.e., [context])
-  /// or on the widget used to configure this object (i.e., [widget]).
-  ///
-  /// {@template flutter.widgets.State.initState}
-  /// If a [State]'s [build] method depends on an object that can itself
-  /// change state, for example a [ChangeNotifier] or [Stream], or some
-  /// other object to which one can subscribe to receive notifications, then
-  /// be sure to subscribe and unsubscribe properly in [initState],
-  /// [didUpdateWidget], and [dispose]:
-  ///
-  ///  * In [initState], subscribe to the object.
-  ///  * In [didUpdateWidget] unsubscribe from the old object and subscribe
-  ///    to the new one if the updated widget configuration requires
-  ///    replacing the object.
-  ///  * In [dispose], unsubscribe from the object.
-  ///
-  /// {@endtemplate}
-  ///
-  /// You should not use [BuildContext.dependOnInheritedWidgetOfExactType] from this
-  /// method. However, [didChangeDependencies] will be called immediately
-  /// following this method, and [BuildContext.dependOnInheritedWidgetOfExactType] can
-  /// be used there.
-  ///
-  /// Implementations of this method should start with a call to the inherited
-  /// method, as in `super.initState()`.
   @protected
   @mustCallSuper
   void initState() {
@@ -404,152 +249,14 @@ abstract class State<T extends StatefulWidget> with Diagnosticable {
     }
   }
 
-  /// Called whenever the widget configuration changes.
-  ///
-  /// If the parent widget rebuilds and requests that this location in the tree
-  /// update to display a new widget with the same [runtimeType] and
-  /// [Widget.key], the framework will update the [widget] property of this
-  /// [State] object to refer to the new widget and then call this method
-  /// with the previous widget as an argument.
-  ///
-  /// Override this method to respond when the [widget] changes (e.g., to start
-  /// implicit animations).
-  ///
-  /// The framework always calls [build] after calling [didUpdateWidget], which
-  /// means any calls to [setState] in [didUpdateWidget] are redundant.
-  ///
-  /// {@macro flutter.widgets.State.initState}
-  ///
-  /// Implementations of this method should start with a call to the inherited
-  /// method, as in `super.didUpdateWidget(oldWidget)`.
-  ///
-  /// _See the discussion at [Element.rebuild] for more information on when this
-  /// method is called._
   @mustCallSuper
   @protected
   void didUpdateWidget(covariant T oldWidget) { }
 
-  /// {@macro flutter.widgets.Element.reassemble}
-  ///
-  /// In addition to this method being invoked, it is guaranteed that the
-  /// [build] method will be invoked when a reassemble is signaled. Most
-  /// widgets therefore do not need to do anything in the [reassemble] method.
-  ///
-  /// See also:
-  ///
-  ///  * [Element.reassemble]
-  ///  * [BindingBase.reassembleApplication]
-  ///  * [Image], which uses this to reload images.
   @protected
   @mustCallSuper
   void reassemble() { }
 
-  /// Notify the framework that the internal state of this object has changed.
-  ///
-  /// Whenever you change the internal state of a [State] object, make the
-  /// change in a function that you pass to [setState]:
-  ///
-  /// ```dart
-  /// setState(() { _myState = newValue; });
-  /// ```
-  ///
-  /// The provided callback is immediately called synchronously. It must not
-  /// return a future (the callback cannot be `async`), since then it would be
-  /// unclear when the state was actually being set.
-  ///
-  /// Calling [setState] notifies the framework that the internal state of this
-  /// object has changed in a way that might impact the user interface in this
-  /// subtree, which causes the framework to schedule a [build] for this [State]
-  /// object.
-  ///
-  /// If you just change the state directly without calling [setState], the
-  /// framework might not schedule a [build] and the user interface for this
-  /// subtree might not be updated to reflect the new state.
-  ///
-  /// Generally it is recommended that the [setState] method only be used to
-  /// wrap the actual changes to the state, not any computation that might be
-  /// associated with the change. For example, here a value used by the [build]
-  /// function is incremented, and then the change is written to disk, but only
-  /// the increment is wrapped in the [setState]:
-  ///
-  /// ```dart
-  /// Future<void> _incrementCounter() async {
-  ///   setState(() {
-  ///     _counter++;
-  ///   });
-  ///   Directory directory = await getApplicationDocumentsDirectory(); // from path_provider package
-  ///   final String dirName = directory.path;
-  ///   await File('$dirName/counter.txt').writeAsString('$_counter');
-  /// }
-  /// ```
-  ///
-  /// Sometimes, the changed state is in some other object not owned by the
-  /// widget [State], but the widget nonetheless needs to be updated to react to
-  /// the new state. This is especially common with [Listenable]s, such as
-  /// [AnimationController]s.
-  ///
-  /// In such cases, it is good practice to leave a comment in the callback
-  /// passed to [setState] that explains what state changed:
-  ///
-  /// ```dart
-  /// void _update() {
-  ///   setState(() { /* The animation changed. */ });
-  /// }
-  /// //...
-  /// animation.addListener(_update);
-  /// ```
-  ///
-  /// It is an error to call this method after the framework calls [dispose].
-  /// You can determine whether it is legal to call this method by checking
-  /// whether the [mounted] property is true. That said, it is better practice
-  /// to cancel whatever work might trigger the [setState] rather than merely
-  /// checking for [mounted] before calling [setState], as otherwise CPU cycles
-  /// will be wasted.
-  ///
-  /// ## Design discussion
-  ///
-  /// The original version of this API was a method called `markNeedsBuild`, for
-  /// consistency with [RenderObject.markNeedsLayout],
-  /// [RenderObject.markNeedsPaint], _et al_.
-  ///
-  /// However, early user testing of the Flutter framework revealed that people
-  /// would call `markNeedsBuild()` much more often than necessary. Essentially,
-  /// people used it like a good luck charm, any time they weren't sure if they
-  /// needed to call it, they would call it, just in case.
-  ///
-  /// Naturally, this led to performance issues in applications.
-  ///
-  /// When the API was changed to take a callback instead, this practice was
-  /// greatly reduced. One hypothesis is that prompting developers to actually
-  /// update their state in a callback caused developers to think more carefully
-  /// about what exactly was being updated, and thus improved their understanding
-  /// of the appropriate times to call the method.
-  ///
-  /// In practice, the [setState] method's implementation is trivial: it calls
-  /// the provided callback synchronously, then calls [Element.markNeedsBuild].
-  ///
-  /// ## Performance considerations
-  ///
-  /// There is minimal _direct_ overhead to calling this function, and as it is
-  /// expected to be called at most once per frame, the overhead is irrelevant
-  /// anyway. Nonetheless, it is best to avoid calling this function redundantly
-  /// (e.g. in a tight loop), as it does involve creating a closure and calling
-  /// it. The method is idempotent, there is no benefit to calling it more than
-  /// once per [State] per frame.
-  ///
-  /// The _indirect_ cost of causing this function, however, is high: it causes
-  /// the widget to rebuild, possibly triggering rebuilds for the entire subtree
-  /// rooted at this widget, and further triggering a relayout and repaint of
-  /// the entire corresponding [RenderObject] subtree.
-  ///
-  /// For this reason, this method should only be called when the [build] method
-  /// will, as a result of whatever state change was detected, change its result
-  /// meaningfully.
-  ///
-  /// See also:
-  ///
-  ///  * [StatefulWidget], the API documentation for which has a section on
-  ///    performance considerations that are relevant here.
   @protected
   void setState(VoidCallback fn) {
     assert(() {
