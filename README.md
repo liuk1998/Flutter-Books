@@ -136,5 +136,17 @@ abstract class StatelessWidget extends Widget {
 ### 8.StatefulWidget 简介
 
 ```
-framework.dart -> 179行
+framework.dart -> 190行
+
+// Liuk -> 有状态的组件.
+abstract class StatefulWidget extends Widget {
+  const StatefulWidget({ super.key });
+
+  @override
+  StatefulElement createElement() => StatefulElement(this); // 重写了createElement()方法.
+
+  @protected
+  @factory
+  State createState(); // 用于创建和 StatefulWidget 相关的状态
+}
 ```
