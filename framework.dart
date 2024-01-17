@@ -130,15 +130,18 @@ class GlobalObjectKey<T extends State<StatefulWidget>> extends GlobalKey<T> {
   }
 }
 
+// Liuk -> 在 Flutter 中, Widget 的功能是“描述一个UI元素的配置信息”，它就是说， Widget 其实并不是表示最终绘制在设备屏幕上的显示元素，所谓的配置信息就是 Widget 接收的参数
+// @immutable 代表 Widget 是不可变的, 这会限制 Widget 中定义的属性（即配置信息）必须是不可变的（final）.
+// 为什么不允许 Widget 中定义的属性变化呢？因为 Flutter 中如果属性发生变化则会重新构建Widget树，即重新创建新的 Widget 实例来替换旧的 Widget 实例，所以允许 Widget 的属性变化是没有意义的，因为一旦 Widget 自己的属性变了自己就会被替换.
 @immutable
-abstract class Widget extends DiagnosticableTree {
+abstract class Widget extends DiagnosticableTree { // DiagnosticableTree 诊断树, 作用是提供调试信息.
   const Widget({ this.key });
 
-  final Key? key;
+  final Key? key; // 作用是决定是否在下一次build时复用旧的 widget ，决定的条件在canUpdate()方法中
 
   @protected
   @factory
-  Element createElement();
+  Element createElement(); // 生成对应节点的Element对象, 在 Flutter 框架中隐式调用的, 在我们开发过程中基本不会调用到.
 
   @override
   String toStringShort() {
@@ -160,6 +163,7 @@ abstract class Widget extends DiagnosticableTree {
   @nonVirtual
   int get hashCode => super.hashCode;
 
+  // 作用: 是否用新的 widget 对象去更新旧 UI 树上所对应的Element对象的配置
   static bool canUpdate(Widget oldWidget, Widget newWidget) {
     return oldWidget.runtimeType == newWidget.runtimeType
         && oldWidget.key == newWidget.key;
