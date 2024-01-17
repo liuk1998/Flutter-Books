@@ -1,7 +1,3 @@
-// Copyright 2014 The Flutter Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
-
 import 'dart:async';
 import 'dart:collection';
 
@@ -29,57 +25,15 @@ export 'package:flutter/foundation.dart' show DiagnosticLevel, DiagnosticsNode;
 export 'package:flutter/foundation.dart' show Key, LocalKey, ValueKey;
 export 'package:flutter/rendering.dart' show RenderBox, RenderObject, debugDumpLayerTree, debugDumpRenderTree;
 
-// Examples can assume:
-// late BuildContext context;
-// void setState(VoidCallback fn) { }
-// abstract class RenderFrogJar extends RenderObject { }
-// abstract class FrogJar extends RenderObjectWidget { const FrogJar({super.key}); }
-// abstract class FrogJarParentData extends ParentData { late Size size; }
-// abstract class SomeWidget extends StatefulWidget { const SomeWidget({super.key}); }
-// typedef ChildWidget = Placeholder;
-// class _SomeWidgetState extends State<SomeWidget> { @override Widget build(BuildContext context) => widget; }
-// abstract class RenderFoo extends RenderObject { }
-// abstract class Foo extends RenderObjectWidget { const Foo({super.key}); }
-// abstract class StatefulWidgetX { const StatefulWidgetX({this.key}); final Key? key; Widget build(BuildContext context, State state); }
-// class SpecialWidget extends StatelessWidget { const SpecialWidget({ super.key, this.handler }); final VoidCallback? handler; @override Widget build(BuildContext context) => this; }
-// late Object? _myState, newValue;
-// int _counter = 0;
-// Future<Directory> getApplicationDocumentsDirectory() async => Directory('');
-// late AnimationController animation;
-
-// An annotation used by test_analysis package to verify patterns are followed
-// that allow for tree-shaking of both fields and their initializers. This
-// annotation has no impact on code by itself, but indicates the following pattern
-// should be followed for a given field:
-//
-// ```dart
-// class Foo {
-//   final bar = kDebugMode ? Object() : null;
-// }
-// ```
 class _DebugOnly {
   const _DebugOnly();
 }
 
 const _DebugOnly _debugOnly = _DebugOnly();
 
-// KEYS
-
-/// A key that takes its identity from the object used as its value.
-///
-/// Used to tie the identity of a widget to the identity of an object used to
-/// generate that widget.
-///
-/// See also:
-///
-///  * [Key], the base class for all keys.
-///  * The discussion at [Widget.key] for more information about how widgets use
-///    keys.
 class ObjectKey extends LocalKey {
-  /// Creates a key that uses [identical] on [value] for its [operator==].
   const ObjectKey(this.value);
 
-  /// The object whose identity is used by this key's [operator==].
   final Object? value;
 
   @override
@@ -103,82 +57,19 @@ class ObjectKey extends LocalKey {
   }
 }
 
-/// A key that is unique across the entire app.
-///
-/// Global keys uniquely identify elements. Global keys provide access to other
-/// objects that are associated with those elements, such as [BuildContext].
-/// For [StatefulWidget]s, global keys also provide access to [State].
-///
-/// Widgets that have global keys reparent their subtrees when they are moved
-/// from one location in the tree to another location in the tree. In order to
-/// reparent its subtree, a widget must arrive at its new location in the tree
-/// in the same animation frame in which it was removed from its old location in
-/// the tree.
-///
-/// Reparenting an [Element] using a global key is relatively expensive, as
-/// this operation will trigger a call to [State.deactivate] on the associated
-/// [State] and all of its descendants; then force all widgets that depends
-/// on an [InheritedWidget] to rebuild.
-///
-/// If you don't need any of the features listed above, consider using a [Key],
-/// [ValueKey], [ObjectKey], or [UniqueKey] instead.
-///
-/// You cannot simultaneously include two widgets in the tree with the same
-/// global key. Attempting to do so will assert at runtime.
-///
-/// ## Pitfalls
-///
-/// GlobalKeys should not be re-created on every build. They should usually be
-/// long-lived objects owned by a [State] object, for example.
-///
-/// Creating a new GlobalKey on every build will throw away the state of the
-/// subtree associated with the old key and create a new fresh subtree for the
-/// new key. Besides harming performance, this can also cause unexpected
-/// behavior in widgets in the subtree. For example, a [GestureDetector] in the
-/// subtree will be unable to track ongoing gestures since it will be recreated
-/// on each build.
-///
-/// Instead, a good practice is to let a State object own the GlobalKey, and
-/// instantiate it outside the build method, such as in [State.initState].
-///
-/// See also:
-///
-///  * The discussion at [Widget.key] for more information about how widgets use
-///    keys.
 @optionalTypeArgs
 abstract class GlobalKey<T extends State<StatefulWidget>> extends Key {
-  /// Creates a [LabeledGlobalKey], which is a [GlobalKey] with a label used for
-  /// debugging.
-  ///
-  /// The label is purely for debugging and not used for comparing the identity
-  /// of the key.
+ 
   factory GlobalKey({ String? debugLabel }) => LabeledGlobalKey<T>(debugLabel);
 
-  /// Creates a global key without a label.
-  ///
-  /// Used by subclasses because the factory constructor shadows the implicit
-  /// constructor.
   const GlobalKey.constructor() : super.empty();
 
   Element? get _currentElement => WidgetsBinding.instance.buildOwner!._globalKeyRegistry[this];
 
-  /// The build context in which the widget with this key builds.
-  ///
-  /// The current context is null if there is no widget in the tree that matches
-  /// this global key.
   BuildContext? get currentContext => _currentElement;
 
-  /// The widget in the tree that currently has this global key.
-  ///
-  /// The current widget is null if there is no widget in the tree that matches
-  /// this global key.
   Widget? get currentWidget => _currentElement?.widget;
 
-  /// The [State] for the widget in the tree that currently has this global key.
-  ///
-  /// The current state is null if (1) there is no widget in the tree that
-  /// matches this global key, (2) that widget is not a [StatefulWidget], or the
-  /// associated [State] object is not a subtype of `T`.
   T? get currentState {
     final Element? element = _currentElement;
     if (element is StatefulElement) {
@@ -192,16 +83,9 @@ abstract class GlobalKey<T extends State<StatefulWidget>> extends Key {
   }
 }
 
-/// A global key with a debugging label.
-///
-/// The debug label is useful for documentation and for debugging. The label
-/// does not affect the key's identity.
 @optionalTypeArgs
 class LabeledGlobalKey<T extends State<StatefulWidget>> extends GlobalKey<T> {
-  /// Creates a global key with a debugging label.
-  ///
-  /// The label does not affect the key's identity.
-  // ignore: prefer_const_constructors_in_immutables , never use const for this class
+  
   LabeledGlobalKey(this._debugLabel) : super.constructor();
 
   final String? _debugLabel;
@@ -216,34 +100,10 @@ class LabeledGlobalKey<T extends State<StatefulWidget>> extends GlobalKey<T> {
   }
 }
 
-/// A global key that takes its identity from the object used as its value.
-///
-/// Used to tie the identity of a widget to the identity of an object used to
-/// generate that widget.
-///
-/// Any [GlobalObjectKey] created for the same object will match.
-///
-/// If the object is not private, then it is possible that collisions will occur
-/// where independent widgets will reuse the same object as their
-/// [GlobalObjectKey] value in a different part of the tree, leading to a global
-/// key conflict. To avoid this problem, create a private [GlobalObjectKey]
-/// subclass, as in:
-///
-/// ```dart
-/// class _MyKey extends GlobalObjectKey {
-///   const _MyKey(super.value);
-/// }
-/// ```
-///
-/// Since the [runtimeType] of the key is part of its identity, this will
-/// prevent clashes with other [GlobalObjectKey]s even if they have the same
-/// value.
 @optionalTypeArgs
 class GlobalObjectKey<T extends State<StatefulWidget>> extends GlobalKey<T> {
-  /// Creates a global key that uses [identical] on [value] for its [operator==].
   const GlobalObjectKey(this.value) : super.constructor();
 
-  /// The object whose identity is used by this key's [operator==].
   final Object value;
 
   @override
@@ -261,9 +121,7 @@ class GlobalObjectKey<T extends State<StatefulWidget>> extends GlobalKey<T> {
   @override
   String toString() {
     String selfType = objectRuntimeType(this, 'GlobalObjectKey');
-    // The runtimeType string of a GlobalObjectKey() returns 'GlobalObjectKey<State<StatefulWidget>>'
-    // because GlobalObjectKey is instantiated to its bounds. To avoid cluttering the output
-    // we remove the suffix.
+    
     const String suffix = '<State<StatefulWidget>>';
     if (selfType.endsWith(suffix)) {
       selfType = selfType.substring(0, selfType.length - suffix.length);
@@ -272,81 +130,16 @@ class GlobalObjectKey<T extends State<StatefulWidget>> extends GlobalKey<T> {
   }
 }
 
-/// Describes the configuration for an [Element].
-///
-/// Widgets are the central class hierarchy in the Flutter framework. A widget
-/// is an immutable description of part of a user interface. Widgets can be
-/// inflated into elements, which manage the underlying render tree.
-///
-/// Widgets themselves have no mutable state (all their fields must be final).
-/// If you wish to associate mutable state with a widget, consider using a
-/// [StatefulWidget], which creates a [State] object (via
-/// [StatefulWidget.createState]) whenever it is inflated into an element and
-/// incorporated into the tree.
-///
-/// A given widget can be included in the tree zero or more times. In particular
-/// a given widget can be placed in the tree multiple times. Each time a widget
-/// is placed in the tree, it is inflated into an [Element], which means a
-/// widget that is incorporated into the tree multiple times will be inflated
-/// multiple times.
-///
-/// The [key] property controls how one widget replaces another widget in the
-/// tree. If the [runtimeType] and [key] properties of the two widgets are
-/// [operator==], respectively, then the new widget replaces the old widget by
-/// updating the underlying element (i.e., by calling [Element.update] with the
-/// new widget). Otherwise, the old element is removed from the tree, the new
-/// widget is inflated into an element, and the new element is inserted into the
-/// tree.
-///
-/// See also:
-///
-///  * [StatefulWidget] and [State], for widgets that can build differently
-///    several times over their lifetime.
-///  * [InheritedWidget], for widgets that introduce ambient state that can
-///    be read by descendant widgets.
-///  * [StatelessWidget], for widgets that always build the same way given a
-///    particular configuration and ambient state.
 @immutable
 abstract class Widget extends DiagnosticableTree {
-  /// Initializes [key] for subclasses.
   const Widget({ this.key });
 
-  /// Controls how one widget replaces another widget in the tree.
-  ///
-  /// If the [runtimeType] and [key] properties of the two widgets are
-  /// [operator==], respectively, then the new widget replaces the old widget by
-  /// updating the underlying element (i.e., by calling [Element.update] with the
-  /// new widget). Otherwise, the old element is removed from the tree, the new
-  /// widget is inflated into an element, and the new element is inserted into the
-  /// tree.
-  ///
-  /// In addition, using a [GlobalKey] as the widget's [key] allows the element
-  /// to be moved around the tree (changing parent) without losing state. When a
-  /// new widget is found (its key and type do not match a previous widget in
-  /// the same location), but there was a widget with that same global key
-  /// elsewhere in the tree in the previous frame, then that widget's element is
-  /// moved to the new location.
-  ///
-  /// Generally, a widget that is the only child of another widget does not need
-  /// an explicit key.
-  ///
-  /// See also:
-  ///
-  ///  * The discussions at [Key] and [GlobalKey].
   final Key? key;
 
-  /// Inflates this configuration to a concrete instance.
-  ///
-  /// A given widget can be included in the tree zero or more times. In particular
-  /// a given widget can be placed in the tree multiple times. Each time a widget
-  /// is placed in the tree, it is inflated into an [Element], which means a
-  /// widget that is incorporated into the tree multiple times will be inflated
-  /// multiple times.
   @protected
   @factory
   Element createElement();
 
-  /// A short, textual description of this widget.
   @override
   String toStringShort() {
     final String type = objectRuntimeType(this, 'Widget');
@@ -367,25 +160,11 @@ abstract class Widget extends DiagnosticableTree {
   @nonVirtual
   int get hashCode => super.hashCode;
 
-  /// Whether the `newWidget` can be used to update an [Element] that currently
-  /// has the `oldWidget` as its configuration.
-  ///
-  /// An element that uses a given widget as its configuration can be updated to
-  /// use another widget as its configuration if, and only if, the two widgets
-  /// have [runtimeType] and [key] properties that are [operator==].
-  ///
-  /// If the widgets have no key (their key is null), then they are considered a
-  /// match if they have the same type, even if their children are completely
-  /// different.
   static bool canUpdate(Widget oldWidget, Widget newWidget) {
     return oldWidget.runtimeType == newWidget.runtimeType
         && oldWidget.key == newWidget.key;
   }
 
-  // Return a numeric encoding of the specific `Widget` concrete subtype.
-  // This is used in `Element.updateChild` to determine if a hot reload modified the
-  // superclass of a mounted element's configuration. The encoding of each `Widget`
-  // must match the corresponding `Element` encoding in `Element._debugConcreteSubtype`.
   static int _debugConcreteSubtype(Widget widget) {
     return widget is StatefulWidget ? 1 :
            widget is StatelessWidget ? 2 :
