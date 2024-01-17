@@ -74,6 +74,16 @@ framework.dart
 ### 7.StatelessWidget 简介
 
 ```
-framework.dart
-303行
+framework.dart -> 303行
+
+// Liuk -> 无状态的组件. 用于不需要维护状态的场景, 它通常在 build 方法中通过嵌套其他 widget 来构建UI.
+abstract class StatelessWidget extends Widget {
+  const StatelessWidget({ super.key });
+
+  @override
+  StatelessElement createElement() => StatelessElement(this); // 重写了createElement()方法.
+
+  @protected
+  Widget build(BuildContext context); // context参数, 表示当前 widget 在 widget 树中的上下文, 每一个 widget 都会对应一个 context 对象.
+}
 ```
