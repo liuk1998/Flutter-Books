@@ -132,3 +132,9 @@ abstract class StatelessWidget extends Widget {
   Widget build(BuildContext context); // context参数, 表示当前 widget 在 widget 树中的上下文, 每一个 widget 都会对应一个 context 对象.
 }
 ```
+
+### 8.StatefulWidget 简介
+
+```
+framework.dart -> 179行
+```
