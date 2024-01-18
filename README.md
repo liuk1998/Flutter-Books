@@ -150,3 +150,9 @@ abstract class StatefulWidget extends Widget {
   State createState(); // 用于创建和 StatefulWidget 相关的状态
 }
 ```
+
+### 9.计数器应用示例及注释
+
+```
+main.dart
+```
