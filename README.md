@@ -174,3 +174,9 @@ father.dart
 ```
 routes.dart
 ```
+
+### 13.路由管理-命名路由及传参、路由钩子
+
+```
+routesName.dart
+```
