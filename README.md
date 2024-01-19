@@ -168,3 +168,9 @@ myself.dart
 ```
 father.dart
 ```
+
+### 12.路由管理-路由跳转及传参
+
+```
+routes.dart
+```
