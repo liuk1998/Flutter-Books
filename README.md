@@ -156,3 +156,9 @@ abstract class StatefulWidget extends Widget {
 ```
 main.dart
 ```
+
+### 10.状态管理-Widget 管理自己的状态
+
+```
+myself.dart
+```
