@@ -89,14 +89,14 @@ class _MyHomePageState extends State<MyHomePage> {
             TextButton(
               child: const Text('open new route'),
               onPressed: () async {
-                // * 跳转新路由
-                // ? MaterialPageRoute 是 Material 组件库提供的组件. 路由切换动画(可根据安卓或IOS切换对应得动画).
+                // ! 跳转新路由
+                // ! MaterialPageRoute 是 Material 组件库提供的组件. 路由切换动画(可根据安卓或IOS切换对应得动画).
                 // MaterialPageRoute 可以接收的四个参数:
                 // 1.builder(具体的路由页面, 返回值为 widget).
                 // 2.settings(路由的配置信息).
                 // 3.maintainState(bool类型, 跳转到新路由后是否释放掉原路由的内存, false 为释放).
                 // 4.fullscreenDialog(bool类型, 新的路由页面是否是一个全屏的模态对话框).
-                // ? Navigator 是路由管理的组件, 提供了打开(push)和退出(pop)路由页方法.
+                // ! Navigator 是路由管理的组件, 提供了打开(push)和退出(pop)路由页方法.
                 var result = await Navigator.push(context, MaterialPageRoute(builder: (context) {
                   return const NewRoute(text: 'This is new route'); // ? 路由传参
                 }));
@@ -118,7 +118,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-// * 新路由
+// ! 新路由
 class NewRoute extends StatelessWidget {
   const NewRoute({super.key, required this.text});
 
