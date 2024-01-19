@@ -97,8 +97,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 // 3.maintainState(bool类型, 跳转到新路由后是否释放掉原路由的内存, false 为释放).
                 // 4.fullscreenDialog(bool类型, 新的路由页面是否是一个全屏的模态对话框).
                 // ? Navigator 是路由管理的组件, 提供了打开(push)和退出(pop)路由页方法.
-                var result = await Navigator.push(context,
-                    MaterialPageRoute(builder: (context) {
+                var result = await Navigator.push(context, MaterialPageRoute(builder: (context) {
                   return const NewRoute(text: 'This is new route'); // ? 路由传参
                 }));
                 print('路由返回值: $result');
@@ -134,16 +133,16 @@ class NewRoute extends StatelessWidget {
         body: Padding(
           padding: const EdgeInsets.all(18),
           child: Center(
-              child: Column(
-            children: <Widget>[
-              Text(text),
-              ElevatedButton(
-                onPressed: () =>
-                    Navigator.pop(context, 'I am back!'), // ? 路由回退并携带参数
-                child: const Text('Go Back'),
-              )
-            ],
-          )),
+            child: Column(
+              children: <Widget>[
+                Text(text),
+                ElevatedButton(
+                  onPressed: () => Navigator.pop(context, 'I am back!'), // ? 路由回退并携带参数
+                  child: const Text('Go Back'),
+                )
+              ],
+            )
+          ),
         ));
   }
 }
