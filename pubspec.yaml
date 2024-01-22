@@ -1,22 +1,27 @@
-name: flutter_test_project_1
-description: "A new Flutter project."
+name: flutter_test_project_1 # 名称
+description: "A new Flutter project." # 描述、简介
 publish_to: "none"
-version: 1.0.0+1
+version: 1.0.0+1 #版本号
 
 environment:
   sdk: ">=3.2.4 <4.0.0"
 
+# 包依赖的其他包或插件
 dependencies:
   flutter:
     sdk: flutter
 
   cupertino_icons: ^1.0.2
+  # 新添加的依赖
+  english_words: ^4.0.0
 
+# 开发环境依赖的工具包(不是flutter应用本身依赖的包)
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
   flutter_lints: ^2.0.0
 
+# flutter相关的配置选项
 flutter:
   uses-material-design: true
