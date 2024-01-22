@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:english_words/english_words.dart';
 
 // ! Flutter 中万物皆为 Widget (组件). 可以理解为搭积木.
 
@@ -134,6 +135,8 @@ class NewRoute extends StatelessWidget {
   Widget build(BuildContext context) {
     // ! 获取路由参数
     var args = ModalRoute.of(context)?.settings.arguments;
+    // ? 随机生成字符串
+    final word = WordPair.random();
     return Scaffold(
         appBar: AppBar(
           title: const Text('New Route'),
@@ -147,7 +150,7 @@ class NewRoute extends StatelessWidget {
               ElevatedButton(
                 onPressed: () =>
                     Navigator.pop(context, 'I am back!'), // ? 路由回退并携带参数
-                child: const Text('Go Back'),
+                child: const Text(word.toString()),
               )
             ],
           )),
