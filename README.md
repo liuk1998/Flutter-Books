@@ -180,3 +180,11 @@ routes.dart
 ```
 routesName.dart
 ```
+
+### 14.包管理
+
+```
+Flutter 开发中的包管理工具, 配置文件: pubspec.yaml. (相当于Vue的package.json).
+
+Pub仓库(Google 官方的 Dart Packages 仓库, 类似于 node 中的 npm仓库): https://pub.dev/
+```
