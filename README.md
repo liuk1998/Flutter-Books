@@ -227,3 +227,9 @@ button.dart
 Material Design的字体图标库: https://material.io/tools/icons/
 images.dart
 ```
+
+### 19.基础组件-单选开关和复选框
+
+```
+switchAndCheckbox.dart
+```
