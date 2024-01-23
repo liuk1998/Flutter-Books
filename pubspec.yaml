@@ -24,4 +24,8 @@ dev_dependencies:
 
 # flutter相关的配置选项
 flutter:
+  # Material Design的字体图标: https://material.io/tools/icons/
   uses-material-design: true
+  # 资源
+  assets:
+    - images/head.jpg
