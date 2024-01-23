@@ -208,3 +208,9 @@ Flutter 也使用 pubspec.yaml 文件来管理应用程序所需的资源.
 AssetImage('2.0x/my_icon.png', package: '项目名')
 Image.asset('2.0x/my_icon.png', package: '项目名')
 ```
+
+### 16.基础组件-文本及样式
+
+```
+text.dart
+```
