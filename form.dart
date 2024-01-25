@@ -79,18 +79,19 @@ class _FormState extends State<FormWidget> {
                   child: Row(
                     children: <Widget>[
                       Expanded(
-                          child: ElevatedButton(
-                        child: const Padding(
-                          padding: EdgeInsets.all(16),
-                          child: Text('登录'),
-                        ),
-                        onPressed: () {
-                          // * 通过 _formKey.currentState 获取 FormState 后, 调用 validate() 方法校验用户名密码是否合法.
-                          if ((_formKey.currentState as FormState).validate()) {
-                            print('验证通过');
-                          }
-                        },
-                      ))
+                        child: ElevatedButton(
+                          child: const Padding(
+                            padding: EdgeInsets.all(16),
+                            child: Text('登录'),
+                          ),
+                          onPressed: () {
+                            // * 通过 _formKey.currentState 获取 FormState 后, 调用 validate() 方法校验用户名密码是否合法.
+                            if ((_formKey.currentState as FormState).validate()) {
+                              print('验证通过');
+                            }
+                          },
+                        )
+                      )
                     ],
                   ),
                 )
