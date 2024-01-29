@@ -257,3 +257,9 @@ progress.dart
 ```
 constrainedBox.dart
 ```
+
+### 24.布局组件-线性布局
+
+```
+row.dart
+```
