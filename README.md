@@ -287,3 +287,45 @@ stack.dart
 ```
 align.dart
 ```
+
+### 29.容器组件-填充
+
+```
+padding.dart
+```
+
+### 30.容器组件-装饰容器
+
+```
+decorated.dart
+```
+
+### 31.容器组件-变换
+
+```
+transform.dart
+```
+
+### 32.容器组件-容器
+
+```
+container.dart
+```
+
+### 33.容器组件-剪裁
+
+```
+clip.dart
+```
+
+### 34.容器组件-空间适配
+
+```
+fitted.dart
+```
+
+### 35.容器组件-页面骨架
+
+```
+scaffold.dart
+```
