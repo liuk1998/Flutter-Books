@@ -312,19 +312,13 @@ transform.dart
 container.dart
 ```
 
-### 33.容器组件-剪裁
-
-```
-clip.dart
-```
-
-### 34.容器组件-空间适配
+### 33.容器组件-空间适配
 
 ```
 fitted.dart
 ```
 
-### 35.容器组件-页面骨架
+### 34.容器组件-页面骨架
 
 ```
 scaffold.dart
