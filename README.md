@@ -323,3 +323,24 @@ fitted.dart
 ```
 scaffold.dart
 ```
+
+### 35.可滚动组件-Sliver布局
+
+```
+Sliver 的主要作用: 加载子组件并确定每一个子组件的布局和绘制信息, 如果 Sliver 可以包含多个子组件时, 通常会实现按需加载模型.
+
+可滚动组件由三个角色组成: Scrollable、Viewport 和 Sliver.
+Scrollable: 用于处理滑动手势, 确定滑动偏移, 滑动偏移变化时构建 Viewport.
+Viewport: 显示的视窗, 即列表的可视区域.
+Sliver: 视窗里显示的元素.
+具体布局过程:
+1.Scrollable 监听到用户滑动行为后, 根据最新的滑动偏移构建 Viewport.
+2.Viewport 将当前视口信息和配置信息通过 SliverConstraints 传递给 Sliver.
+3.Sliver 中对子组件(RenderBox)按需进行构建和布局, 然后确认自身的位置、绘制等信息, 保存在 geometry 中.
+```
+
+### 36.可滚动组件-ListView
+
+```
+listView.dart
+```
