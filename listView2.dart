@@ -80,7 +80,7 @@ class _InfiniteListViewState extends State<InfiniteListView> {
                     leading: const Icon(Icons.ac_unit), // 左侧组件
                     title: Text(wordsList[index]), // 标题
                     subtitle: const Text('by LiuKe'), // 副标题
-                    trailing: const Icon(Icons.access_alarm),
+                    trailing: const Icon(Icons.access_alarm), // 右侧组件
                   );
                 },
                 // * 分割器构造器
