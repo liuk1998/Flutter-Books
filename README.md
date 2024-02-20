@@ -352,3 +352,9 @@ listView2.dart
 scrollController.dart
 notification.dart
 ```
+
+### 38.滚动监听及控制-AnimatedList
+
+```
+animatedList.dart
+```
