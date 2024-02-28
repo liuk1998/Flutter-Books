@@ -383,3 +383,10 @@ tabBarView.dart
 ```
 customScrollView1.dart
 ```
+
+
+### 43.功能型组件-数据共享
+
+```
+inheritedWidget.dart
+```
