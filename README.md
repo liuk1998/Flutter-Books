@@ -390,3 +390,9 @@ customScrollView1.dart
 ```
 inheritedWidget.dart
 ```
+
+### 44.功能型组件-跨组件状态共享
+
+```
+provider.dart
+```
