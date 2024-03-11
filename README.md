@@ -400,5 +400,6 @@ provider.dart
 ### 45.功能型组件-颜色和主题
 
 ```
-colorsThemes.dart
+colors.dart
+themes.dart
 ```
