@@ -403,3 +403,9 @@ provider.dart
 colors.dart
 themes.dart
 ```
+
+### 46.功能型组件-按需rebuild(ValueListenableBuilder)
+
+```
+valueListenableBuilder.dart
+```
