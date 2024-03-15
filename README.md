@@ -416,3 +416,11 @@ valueListenableBuilder.dart
 futureBuilder.dart
 streamBuilder.dart
 ```
+
+### 48.功能型组件-对话框
+
+```
+dialog1.dart
+dialog2.dart
+dialog3.dart
+```
