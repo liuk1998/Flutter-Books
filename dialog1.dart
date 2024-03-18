@@ -1,15 +1,16 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-// ! 功能型组件-对话框
+// ! 功能型组件-对话框状态管理
 
 void main() {
-  // ! 在 Flutter 中使用 showDialog() 类显示对话框时, 可能会出现 No MaterialLocalizations found错误. 问题是将子小部件放在 MaterialApp() 小部件的home属性上, 而不创建新的小部件类.
-  // ! 一种解决方法是将 MaterialApp() 放入 runApp() 中, 并为 home 属性创建新的类.
   runApp(const MaterialApp(
     home: DialogTest(),
     title: '对话框',
   ));
 }
+
+// * 在用户选择了文件夹时避免二次弹窗确认是否删除子目录, 我们在确认对话框底部添加一个"同时删除子目录?"的复选框.
 
 class DialogTest extends StatelessWidget {
   const DialogTest({super.key});
@@ -41,6 +42,35 @@ class DialogTest extends StatelessWidget {
               await showSimpleDialog(context);
             },
             child: const Text('SimpleDialog'),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              // * 底部菜单列表
+              int? type = await showModalBottom(context);
+              print(type);
+            },
+            child: const Text('ModalBottomSheet'),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              // * Loading
+              await showLoadingDialog(context);
+            },
+            child: const Text('LoadingDialog'),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              // * 日历选择器(安卓)
+              await showDatePicker1(context);
+            },
+            child: const Text('DatePicker1'),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              // * 日历选择器(苹果)
+              await showDatePicker2(context);
+            },
+            child: const Text('DatePicker2'),
           ),
         ],
       ),
@@ -75,7 +105,7 @@ class DialogTest extends StatelessWidget {
     int i = await showDialog(
       context: context,
       builder: (BuildContext context) {
-        // * 展示一个列表，用于列表选择的场景
+        // * 展示一个列表, 用于列表选择的场景
         return SimpleDialog(
           title: const Text('请选择语言'),
           children: <Widget>[
@@ -105,5 +135,80 @@ class DialogTest extends StatelessWidget {
     );
 
     print('选择了：${i == 1 ? "中文简体" : "美国英语"}');
+  }
+
+  // * 底部菜单列表
+  Future<int?> showModalBottom(BuildContext context) {
+    return showModalBottomSheet<int>(
+        context: context,
+        builder: (BuildContext context) {
+          return ListView.builder(
+            itemCount: 30,
+            itemBuilder: (BuildContext context, int index) {
+              return ListTile(
+                title: Text('$index'),
+                onTap: () => Navigator.of(context).pop(index),
+              );
+            },
+          );
+        });
+  }
+
+  // * Loading框
+  showLoadingDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false, // 点击遮罩不关闭对话框
+      builder: (context) {
+        return const AlertDialog(
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              CircularProgressIndicator(),
+              Padding(
+                padding: EdgeInsets.only(top: 26),
+                child: Text('正在加载, 请稍后...'),
+              )
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  // * 日历选择器(安卓)
+  Future<DateTime?> showDatePicker1(BuildContext context) {
+    var date = DateTime.now();
+    return showDatePicker(
+      context: context,
+      firstDate: date,
+      initialDate: date,
+      // 未来30天可选
+      lastDate: date.add(
+        const Duration(days: 30),
+      ),
+    );
+  }
+
+  // * 日历选择器(苹果)
+  Future<DateTime?> showDatePicker2(BuildContext context) {
+    var date = DateTime.now();
+    return showCupertinoDialog(
+      context: context,
+      builder: (ctx) {
+        return SizedBox(
+          height: 200,
+          child: CupertinoDatePicker(
+            mode: CupertinoDatePickerMode.dateAndTime,
+            minimumDate: date,
+            maximumDate: date.add(Duration(days: 30)),
+            maximumYear: date.year + 1,
+            onDateTimeChanged: (DateTime value) {
+              print(value);
+            },
+          ),
+        );
+      },
+    );
   }
 }
