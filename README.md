@@ -428,3 +428,10 @@ dialog1.dart
 ```
 pointer.dart
 ```
+
+### 50.事件处理与通知-手势识别
+
+```
+gestureDetector1.dart
+gestureDetector2.dart
+```
