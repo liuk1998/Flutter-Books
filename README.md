@@ -441,3 +441,9 @@ gestureDetector2.dart
 ```
 bus.dart
 ```
+
+### 51.事件处理与通知-事件总线
+
+```
+notification.dart
+```
