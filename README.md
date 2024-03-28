@@ -471,3 +471,9 @@ stagger.dart
 ```
 animatedSwitcher.dart
 ```
+
+### 57.动画-动画过渡组件
+
+```
+animatedTransition.dart
+```
