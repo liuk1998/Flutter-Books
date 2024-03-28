@@ -465,3 +465,9 @@ hero.dart
 ```
 stagger.dart
 ```
+
+### 56.动画-动画切换组件(AnimatedSwitcher)
+
+```
+animatedSwitcher.dart
+```
