@@ -477,3 +477,9 @@ animatedSwitcher.dart
 ```
 animatedTransition.dart
 ```
+
+### 58.动画-组合现有组件
+
+```
+gradientButton.dart
+```
