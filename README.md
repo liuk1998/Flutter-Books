@@ -489,3 +489,9 @@ gradientButton.dart
 ```
 turnBox.dart
 ```
+
+### 60.自定义组件-CustomPaint 与 Canvas
+
+```
+customPaint.dart
+```
