@@ -534,3 +534,19 @@ dev_dependencies:
 将解析后得数据粘贴到创建的dart文件中, 运行 flutter packages pub run build_runner build
 生成对应的g.dart文件.
 ```
+
+### 64.Flutter项目-lib文件下的目录
+```
+// ! lib文件下的目录:
+// * common: 一些工具类, 如通用方法类、网络接口类、保存全局变量的静态类等
+// * l10n: 国际化相关的类都在此目录下.
+// * models: Json文件对应的 Dart Model 类会在此目录下.
+// * states: 保存APP中需要跨组件共享的状态类.
+// * routes: 存放所有路由页面类.
+// * widgets: APP内封装的一些 Widget 组件都在该目录下.
+
+// ! 项目根目录下创建的文件夹:
+// * imgs: 用于保存图片.
+// * fonts: 用于保存 Icon 文件.
+// * jsons: 用于保存 Json 文件.
+```
