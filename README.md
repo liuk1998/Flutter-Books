@@ -507,3 +507,30 @@ http.dart
 ```
 dio.dart
 ```
+
+### 63.APP中将用到的数据生成相应的Dart Model类
+
+```
+在pubspec.yaml文件添加如下配置：
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.2
+  dio: ">=4.0.1 <5.0.0"
+  freezed_annotation: "^2.0.3"
+  json_annotation: "^4.4.0"
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+  freezed: "^2.0.3"
+  json_serializable: "^6.1.4"
+  build_runner: any
+  build_runner_core: ^7.2.9
+  test: ^1.16.0
+----------------------------------
+将json数据拷贝到工具中进行解析：https://caijinglong.github.io/json2dart/index_ch.html
+将解析后得数据粘贴到创建的dart文件中, 运行 flutter packages pub run build_runner build
+生成对应的g.dart文件.
+```
