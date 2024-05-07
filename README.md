@@ -519,6 +519,7 @@ dependencies:
   dio: ">=4.0.1 <5.0.0"
   freezed_annotation: "^2.0.3"
   json_annotation: "^4.4.0"
+  shared_preferences: ^2.2.3
 
 dev_dependencies:
   flutter_test:
@@ -533,6 +534,8 @@ dev_dependencies:
 将json数据拷贝到工具中进行解析：https://caijinglong.github.io/json2dart/index_ch.html
 将解析后得数据粘贴到创建的dart文件中, 运行 flutter packages pub run build_runner build
 生成对应的g.dart文件.
+----------------------------------
+shared_preferences是一个Flutter插件, 它通过Android和iOS平台提供的机制来实现数据持久化.
 ```
 
 ### 64.Flutter项目-lib文件下的目录
